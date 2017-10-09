@@ -42,17 +42,17 @@ foreach($html->find('a.btn') as $row) {
 
 
 halaman_login:
-echo "Buka halaman login\n";
+echo "Open login page\n";
 $url = $baseURL."?sign_in=1&".$sessionID;
 getUrl($url);
 
 proses_login:
-echo "Proses login\n";
+echo "Login process\n";
 postUrl($baseURL,"login=$username&pass=$password",$baseURL."/?sign_in=1&$sessionID");
 
 halaman_duel:
 echo "username : $username\n";
-echo "Buka halaman duel\n";
+echo "Open duel page\n";
 $out = getUrl($baseURL . "/duel");
 if ($debug) {
     echo $out;
@@ -62,7 +62,7 @@ $html = str_get_html($out);
 foreach($html->find('b') as $row)
         $num = intval($row->plaintext);
 
-echo "sisa petarungan : $num\n";
+echo "Fights available : $num\n";
 
 $tmp = array();
 $html = str_get_html($out);
@@ -79,8 +79,8 @@ $foe = explode(" ",$foe);
 
 if($num == 0) goto end_duel;
 
-echo "stat anda  : " . implode(",",$my) . "\n";
-echo "stat musuh : " . implode(",",$foe) . "\n";
+echo "Your rate : " . implode(",",$my) . "\n";
+echo "Enemy rate : " . implode(",",$foe) . "\n";
 
 $a = $my[0]-$foe[0]-100;
 $b = $my[1]-$foe[1]-100;
@@ -101,14 +101,14 @@ if($a > 0 && $b > 0 && $c > 0 && $d >0) {
 	goto halaman_duel;
 }
 else {
-	echo "lawan kuat, cari yang lain\n";
-	echo "cek sisa\n";
+	echo "Strong opponent, find another\n";
+	echo "check available\n";
 
 	$sisa = explode("\n",$tmp[3]);
 	$sisa = filter_var($sisa[1], FILTER_SANITIZE_NUMBER_INT);
 
 	if($sisa >0 && $sisa <=5) {
-		echo "sisa : $sisa\n";
+		echo "available : $sisa\n";
 		foreach($html->find('a.btn') as $row)
 				$url = $row->href;
 
@@ -119,12 +119,12 @@ else {
 		goto halaman_duel;
 	}
 	else
-		echo "sudah tidak ada sisa\n";
+		echo "Finish duel\n";
 }
 end_duel:
 
 halaman_league:
-echo "Buka halaman league\n";
+echo "Open league page\n";
 $out = getUrl($baseURL .  "/league/");
 
 $html = str_get_html($out);
@@ -157,7 +157,7 @@ foreach($html->find('div.block_zero') as $row) {
 		foreach($row->find('b') as $row2)
 			$num = intval($row2->plaintext);
 
-		echo "Sisa pertarungan : $num\n";
+		echo "Fights available : $num\n";
 		
                 if($num == 0){ 
                     
@@ -192,7 +192,7 @@ for($i=1;$i<=count($musuh);$i++) {
 
 	if($a > 0 && $b > 0 && $c > 0 && $d >0) {
 		echo "attack league\n";
-		echo 'stat musuh : '.$musuh[$i][0].' '.$musuh[$i][1].' '.$musuh[$i][2].' '.$musuh[$i][3].'\n';
+		echo 'Enemy rate : '.$musuh[$i][0].' '.$musuh[$i][1].' '.$musuh[$i][2].' '.$musuh[$i][3].'\n';
 		$url = $baseURL . $musuh[$i][4];
 		echo $url . "\n";
 		$out = getUrl($url,$baseURL . "/league");
@@ -204,7 +204,7 @@ for($i=1;$i<=count($musuh);$i++) {
 end_league:
 
 halaman_cave:
-echo "Buka halaman cave\n";
+echo "Open cave\n";
 $out = getUrl($baseURL. "/cave/");
 
 if($debug) echo $out;
@@ -216,7 +216,7 @@ foreach($html->find('a.btn') as $row) {
 }
 
 if(strpos($url,"cave/runaway")) { 
-	echo "Ada monster, kabur\n";
+	echo "monster exist, finish\n";
 	$url = $baseURL . $url;
 	echo $url . "\n";
 	$out = getUrl($url,$baseURL . "/cave");
@@ -231,7 +231,7 @@ foreach($html->find('a.btn') as $row) {
 }
 
 if(strpos($url,"cave/down")) { 
-	echo "Proses cave down\n";
+	echo "process cave down\n";
 	$url = $baseURL . $url;
 	echo $url . "\n";
 	$out = getUrl($url,$baseURL . "/cave");
@@ -244,14 +244,14 @@ foreach($html->find('a.btn') as $row) {
 }
 
 if(strpos($url,"cave/gather")) { 
-	echo "Proses cave gather\n";
+	echo "process cave gather\n";
 	$url = $baseURL . $url;
 	echo $url . "\n";
 	$out = getUrl($url,$baseURL . "/cave");
 }
 
 halaman_quest:
-echo "Buka halaman quest\n";
+echo "Open quest\n";
 getUrl($baseURL . "/sage/");
 $out = getUrl($baseURL . "/quest/",$baseURL."/sage/");
 if($debug) echo $out;
@@ -263,7 +263,7 @@ foreach($html->find('a.btn') as $row) {
 }
 
 if(strpos($url,"quest/end")) {
-	echo "Ada quest\n";
+	echo "quest exist\n";
 	$url = $baseURL . $url;
 	echo $url . "\n";
 	$out = getUrl($url,$baseURL . "/quest");
@@ -271,10 +271,10 @@ if(strpos($url,"quest/end")) {
 	goto halaman_quest;
 }
 else
-	echo "Tidak ada quest\n";
+	echo "no quest\n";
 
 halaman_relic:
-echo "Buka halaman relic\n";
+echo "Open relic\n";
 getUrl($baseURL . "/sage/");
 $out = getUrl($baseURL . "/relic/",$baseURL."/sage/");
 if($debug) echo $out;
@@ -286,7 +286,7 @@ foreach($html->find('a.btn') as $row) {
 }
 
 if(@strpos($url,"reward")) {
-	echo "Ada reward\n";
+	echo "Take reward\n";
 	$url = $baseURL . $url;
 	echo $url . "\n";
 	$out = getUrl($url,$baseURL . "/relic");
@@ -295,10 +295,10 @@ if(@strpos($url,"reward")) {
 	goto halaman_relic;
 }
 else
-	echo "Tidak ada relic\n";
+	echo "no relic\n";
 
 halaman_gold:
-echo "Buka halaman trade\n";
+echo "Open trade\n";
 $out = getUrl($baseURL . "/trade/");
 if($debug) echo $out;
 
@@ -309,7 +309,7 @@ foreach($html->find('a') as $row) {
 }
 
 if(strpos($url,"trade/exchange")) { 
-	echo "Buka halaman exchange\n";
+	echo "Open exchange\n";
 	$url = $baseURL . $url;
 	$temp = $url;
 	echo $url . "\n";
@@ -332,7 +332,7 @@ if(strpos($url,"trade/exchange")) {
 }
 
 halaman_campaign:
-echo "Buka halaman campaign\n";
+echo "Open campaign\n";
 $out = getUrl($baseURL . "/campaign/");
 if($debug) echo $out;
 
@@ -388,10 +388,10 @@ if(strpos($url,"campaign/end")) {
 }
 
 halaman_bag:
-echo "Buka halaman user\n";
+echo "Open user\n";
 $out = getUrl($baseURL . "/user/");
 
-echo "Buka halaman bag\n";
+echo "Open bag\n";
 $out = getUrl($baseURL . "/inv/bag",$baseURL . "/user");
 
 $html = str_get_html($out);
@@ -407,7 +407,7 @@ if(strpos($url,"inv/bag/sellAll/1")) {
 }
 
 halaman_money:
-echo "Buka halaman clan\n";
+echo "Open clan\n";
 $out = getUrl($baseURL . "/clan");
 
 $html = str_get_html($out);
@@ -417,7 +417,7 @@ foreach($html->find('a') as $row) {
 }
 
 if(strpos($url,"money")) { 
-	echo "Buka halaman clan money\n";
+	echo "open donate clan\n";
 	$url = $baseURL . $url;
 	$ref = $url;
 	echo $url . "\n";
@@ -439,7 +439,7 @@ if(strpos($url,"money")) {
 	$silver = filter_var($silver[1], FILTER_SANITIZE_NUMBER_INT);
 	if($silver == 0) goto end_money;
 	
-	echo "Donasi : $silver silver\n";
+	echo "Donate : $silver silver\n";
 	
 	postUrl($baseURL.$post,"silver=$silver&gold=0&type=normal",$baseURL.$ref);
 }
@@ -447,7 +447,7 @@ if(strpos($url,"money")) {
 end_money:
     
 halaman_clandungeon:
-    echo "Buka halaman clandungeon\n";
+    echo "Open clandungeon\n";
     $out = getUrl($baseURL . "/clandungeon/");
     if($debug) echo $out;
 
@@ -470,7 +470,7 @@ halaman_coliseum:
 $heal	= 0;
 $health = 0;
 $loop 	= 0;
-echo "Buka halaman coliseum\n";
+echo "Open coliseum\n";
 $out = getUrl($baseURL."/coliseum/");
 $html = str_get_html($out);
 foreach($html->find('a') as $row) {
@@ -486,7 +486,7 @@ foreach($html->find('a') as $row) {
 }
 
 halaman_coliseum2:
-echo "Buka halaman coliseum lagi\n";
+echo "Open coliseum again\n";
 $out = getUrl($baseURL."/coliseum/");
 $html = str_get_html($out);
 foreach($html->find('a') as $row) {
@@ -495,7 +495,7 @@ foreach($html->find('a') as $row) {
 }
 
 if(strpos($url,"coliseum/?end_fight=true")) {
-	echo "Akhir pertarungan\n";
+	echo "End fighting coliseum\n";
 	$url = $baseURL.$url;
 	echo $url . "\n";
 	$out = getUrl($url,$baseURL."/coliseum/");
@@ -577,7 +577,7 @@ else {
 end_coliseum:
 
 halaman_arena:
-echo "Buka halaman arena\n";
+echo "open arena\n";
 $out = getUrl($baseURL . "/arena/");
 if($debug) echo $out;
 
@@ -610,7 +610,7 @@ if(strpos($url,"arena/attack")) {
 		foreach($html->find('div.foot') as $row)
 			echo "stat : ".$row->plaintext . "\n";	
 
-		echo date("H:i:s") . " Istirahat\n";
+		echo date("H:i:s") . " Break until ". date("H:i:s", time()+$refreshBot)."\n";
                 echo '-------------------------------------';
 		sleep($refreshBot);
 		goto halaman_duel;
