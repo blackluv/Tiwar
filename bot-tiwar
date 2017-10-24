@@ -251,27 +251,38 @@ if(strpos($url,"cave/gather")) {
 }
 
 halaman_quest:
-echo "Open quest\n";
+echo "Open quest & Chest\n";
 getUrl($baseURL . "/sage/");
 $out = getUrl($baseURL . "/quest/",$baseURL."/sage/");
 if($debug) echo $out;
 
 $html = str_get_html($out);
-foreach($html->find('a.btn') as $row) {
-	$url = $row->href;
-	if(strpos($url,"quest/end")) break;
+$urls = [];
+foreach($html->find('a') as $row) {
+	$data = $row->href;
+	if(strpos($data, "quest/openChest")){
+		$urls[] = $data;
+	}else if(strpos($data,"quest/end")){
+		$urls[] = $data;
+	}
 }
+// print_r($urls);die();
+foreach ($urls as $url) {
+	if(strpos($url,"quest/end")) {
+		echo "quest exist\n";
+		$url = $baseURL . $url;
+		echo $url . "\n";
+		$out = getUrl($url,$baseURL . "/quest");
 
-if(strpos($url,"quest/end")) {
-	echo "quest exist\n";
-	$url = $baseURL . $url;
-	echo $url . "\n";
-	$out = getUrl($url,$baseURL . "/quest");
+	}else if(strpos($url,"quest/openChest")){
+		echo "Chest exist\n";
+		$url = $baseURL . $url;
+		echo $url . "\n";
+		$out = getUrl($url,$baseURL . "/quest");
 
-	goto halaman_quest;
+	}
 }
-else
-	echo "no quest\n";
+echo "no quest & chest\n";
 
 halaman_relic:
 echo "Open relic\n";
@@ -296,6 +307,35 @@ if(@strpos($url,"reward")) {
 }
 else
 	echo "no relic\n";
+
+halaman_collector:
+echo "Open collector\n";
+getUrl($baseURL . "/sage/");
+$out = getUrl($baseURL . "/collector/",$baseURL."/sage/");
+if($debug) echo $out;
+
+$html = str_get_html($out);
+foreach($html->find('a.btn') as $row) {
+	$url = $row->href;
+	if(strpos($url,"reward/element")) break;
+}
+
+foreach($html->find('div.block_zero') as $row){
+	$div[] =  trim($row->plaintext);
+}
+
+if(strpos($url,"reward/element")) {
+	echo "collection exist\n";
+	echo $div[1] . "\n";
+	$url = $baseURL . $url;
+	echo $url . "\n";
+	$out = getUrl($url,$baseURL . "/collector");
+
+	goto halaman_quest;
+}
+else
+	echo $div[1] . "\n";
+	echo "no collection\n";
 
 halaman_gold:
 echo "Open trade\n";
