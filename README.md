@@ -6,6 +6,9 @@ Bot tiwar using php and simple_html_dom.php
 
 * Arena
 * Duel
+* Get Quest
+* Get Chest
+* Get Collector
 * League
 * Coliseum
 * Campaign
