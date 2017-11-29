@@ -4,8 +4,8 @@ Bot tiwar using php and simple_html_dom.php
 
 ### Auto Features
 
+* Career
 * Arena
-* Duel
 * Get Quest
 * Get Chest
 * Get Collector
@@ -18,6 +18,7 @@ Bot tiwar using php and simple_html_dom.php
 * Sell Item In Bag
 * Clan Silver Donation
 * Clan Dungeon
+* ~~Duel~~ (Removed)
 
 ### Run The Bot
 
@@ -32,6 +33,7 @@ Bot tiwar using php and simple_html_dom.php
 * **-u** = username tiwar [**required**]
 * **-p** = password tiwar [**required**]
 * **-r** = refresh time / second [**optional**] [default = 900]
+* **-c** = custom cookies file name [**optional**] [default = #Username]
 
 
 ### Original Repo & Thanks To
