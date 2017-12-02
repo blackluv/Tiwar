@@ -128,10 +128,23 @@ echo "username : $username\n";
 // end_duel:
 
 halaman_league:
+
 echo "Open league page\n";
 $out = getUrl($baseURL .  "/league/");
 
 $html = str_get_html($out);
+
+foreach($html->find('div.foot') as $row){
+	echo "stat : ".$row->plaintext . "\n";
+	foreach ($row->find('div.center') as $stat) {
+		$stats = $stat->plaintext;
+	}
+}
+$stats = explode(" ", $stats);
+
+$statLvl 	= @$stats[1];
+$statGold 	= @$stats[4];
+$statSilver	= @$stats[7];
 
 $tmp = array();
 $html = str_get_html($out);
@@ -566,6 +579,12 @@ $loop 	= 0;
 echo "Open coliseum\n";
 $out = getUrl($baseURL."/coliseum/");
 $html = str_get_html($out);
+
+if($statLvl < 10){
+	echo "Your Lvl to low\n";
+	goto end_coliseum;
+}
+
 foreach($html->find('a') as $row) {
 	$url = $row->href;
 	if(strpos($url,"coliseum/enterFight")) {
