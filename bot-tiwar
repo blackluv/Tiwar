@@ -563,9 +563,18 @@ halaman_clandungeon:
         if (strpos($url, "clandungeon/attack")) {
             break;
         }
+        if (strpos($url, "clandungeon/?close")) {
+            break;
+        }
     }
     if(strpos($url, 'clandungeon/attack')){
         echo "attack clan monster\n";
+        $url = $baseURL.$url;
+        $out = getUrl($url,$baseURL."/clandungeon");
+        goto halaman_clandungeon;
+    }
+    if(strpos($url, 'clandungeon/?close')){
+        echo "Close clan dungeon\n";
         $url = $baseURL.$url;
         $out = getUrl($url,$baseURL."/clandungeon");
         goto halaman_clandungeon;
@@ -594,6 +603,10 @@ foreach($html->find('a') as $row) {
 		$out = getUrl($url,$baseURL."/coliseum");
 		$fight = false;
 		sleep(5);
+	}
+	if(strpos($url, "train")){
+		echo "Your Skill to low\n";
+		goto end_coliseum;
 	}
 }
 
