@@ -361,12 +361,18 @@ if(strpos($url,"reward/element")) {
 	$url = $baseURL . $url;
 	echo $url . "\n";
 	$out = getUrl($url,$baseURL . "/collector");
-
-	goto halaman_quest;
-}
-else
+	goto halaman_collector;
+}else if(strpos($url,"reward/collection")){
+	echo "collection Complete\n";
+	echo $div[1] . "\n";
+	$url = $baseURL . $url;
+	echo $url . "\n";
+	$out = getUrl($url,$baseURL . "/collector");
+	goto halaman_collector;	
+}else{
 	echo $div[1] . "\n";
 	echo "no collection\n";
+}
 
 halaman_gold:
 echo "Open trade\n";
