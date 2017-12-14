@@ -738,11 +738,36 @@ if(strpos($url,"arena/attack")) {
 	}
 	if(@strlen($status) == 0) {
 		$html = str_get_html($out);
-		foreach($html->find('div.foot') as $row)
+		foreach($html->find('div.foot') as $row){
 			echo "stat : ".$row->plaintext . "\n";	
+		}
+
+		foreach ($html->find('div#topdiv') as $row) {
+			$footer = $row->children(2);
+		}
+		$events=[];
+		$timeEvents=[];
+		foreach ($footer->find('a.quality-4') as $event) {
+			$events[] = $event->plaintext;
+		}
+		for($i=0;$i<15;$i++){
+			if($footer->children($i)->tag == 'br' && count($events)!=0){
+				$timeEvents[] = $footer->children($i+1)->plaintext;
+
+				if(count($events) == count($timeEvents)){
+					break;
+				}
+			}else if(count($events) == 0){
+				break;
+			}
+		}
 
 		echo date("H:i:s") . " Break until ". date("H:i:s", time()+$refreshBot)."\n";
-                echo '-------------------------------------';
+		echo "--------------------EVENTS--------------------\n";
+		for($i=0; $i<count($events);$i++){
+			echo $events[$i].' - '.$timeEvents[$i]."\n";
+		}
+        echo "----------------------------------------\n";
 		sleep($refreshBot);
 		// goto halaman_duel;
 		goto halaman_league;
